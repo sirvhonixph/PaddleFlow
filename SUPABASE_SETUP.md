@@ -1,4 +1,4 @@
-# Turn off Demo Mode — Supabase login for PaddleFlow
+# Turn off Demo Mode — Supabase login for PickleNavro
 
 Demo mode means **no real passwords** — only email checks. Follow these steps once to enable **email + password** login on **www.pickleflow.online**.
 
@@ -69,7 +69,7 @@ NEXT_PUBLIC_SUPABASE_URL=https://xxxxx.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key-here
 ```
 
-3. Restart the app (`Start Paddleflow.bat`).
+3. Restart the app (`Start PickleNavro.bat`).
 
 ---
 
@@ -96,6 +96,6 @@ Open **https://www.pickleflow.online/login**
 
 ## Notes
 
-- **Old demo users:** They exist in PaddleFlow data but not in Supabase Auth. They must **register again** with a password (same email may work if not already in Supabase).
+- **Old demo users:** They exist in PickleNavro data but not in Supabase Auth. They must **register again** with a password (same email may work if not already in Supabase).
 - **Tournaments/events** still use Vercel Blob for data — keep Blob connected in Vercel (you already did this).
 - **Do not** put your database password or service_role key in Vercel — only the two `NEXT_PUBLIC_*` variables above.

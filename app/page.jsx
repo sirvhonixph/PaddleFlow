@@ -9,7 +9,7 @@ export default function HomePage() {
 
       <nav className="relative z-10 flex items-center justify-between gap-3 px-4 sm:px-6 lg:px-12 py-4 sm:py-6">
         <h1 className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-cyan-400 to-green-400 bg-clip-text text-transparent shrink-0">
-          PaddleFlow
+          PickleNavro
         </h1>
 
         <div className="flex gap-2 sm:gap-4">
@@ -129,7 +129,7 @@ export default function HomePage() {
 
       <footer className="relative z-10 border-t border-white/10 mt-16">
         <div className="max-w-7xl mx-auto px-6 py-8 text-center text-gray-500">
-          © 2026 PaddleFlow. Play. Compete. Connect.
+          © 2026 PickleNavro. Play. Compete. Connect.
         </div>
       </footer>
     </main>

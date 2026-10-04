@@ -11,7 +11,7 @@ export default function Error({ error, reset }) {
   return (
     <div className="min-h-screen bg-slate-950 text-white flex items-center justify-center p-8">
       <div className="max-w-md space-y-4 text-center">
-        <h1 className="text-2xl font-bold text-red-300">PaddleFlow error</h1>
+        <h1 className="text-2xl font-bold text-red-300">PickleNavro error</h1>
         <p className="text-slate-400 text-sm">
           {error.message ?? "Something went wrong loading this page."}
         </p>

@@ -1,6 +1,6 @@
-# Deploy PaddleFlow to Vercel
+# Deploy PickleNavro to Vercel
 
-PaddleFlow is a Next.js app and deploys cleanly on Vercel’s **Hobby (free)** plan for personal projects.
+PickleNavro is a Next.js app and deploys cleanly on Vercel’s **Hobby (free)** plan for personal projects.
 
 ## Is Vercel free?
 
@@ -15,7 +15,7 @@ That is enough for a pickleball tournament app with moderate traffic.
 
 ## Important: data storage
 
-Locally, PaddleFlow saves data to `data/pickleflow-store.json`.
+Locally, PickleNavro saves data to `data/pickleflow-store.json`.
 
 On Vercel, the server filesystem is **read-only**, so the app uses **Vercel Blob** in production when `BLOB_READ_WRITE_TOKEN` is set. On first run it seeds from `data/pickleflow-store.json` in the repo if the blob is empty.
 
@@ -29,7 +29,7 @@ On Vercel, the server filesystem is **read-only**, so the app uses **Vercel Blob
 cd C:\Users\ADMIN\Pickleflow
 git init
 git add .
-git commit -m "Initial PaddleFlow deploy"
+git commit -m "Initial PickleNavro deploy"
 git branch -M main
 git remote add origin https://github.com/YOUR_USERNAME/pickleflow.git
 git push -u origin main

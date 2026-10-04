@@ -1,7 +1,7 @@
 import "./globals.css";
 
 export const metadata = {
-  title: "PaddleFlow — Pickleball Platform",
+  title: "PickleNavro — Pickleball Platform",
   description: "Tournaments, open play, live courts, and player management",
 };
 
