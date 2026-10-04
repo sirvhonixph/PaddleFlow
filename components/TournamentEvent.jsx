@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import TournamentDivisionWorkspace from "@/components/TournamentDivisionWorkspace";
+import TournamentSequence from "@/components/TournamentSequence";
 import DivisionAdvancementPanel from "@/components/DivisionAdvancementPanel";
 import EliminationResultsPanel from "@/components/EliminationResultsPanel";
 import TournamentLiveCourtCard from "@/components/TournamentLiveCourtCard";
@@ -676,7 +677,7 @@ export default function TournamentEvent({ eventId, initialEvent = null }) {
         {divisionSetup?.plan && !divisionKnockoutActive && !divisionFinished && (
           <p className="text-sm text-slate-500">
             {divisionSetup.plan.formulaText} â€” round robin per court; top teams
-            advance to quarterfinals.
+            advance to the selected knockout round.
           </p>
         )}
 
@@ -692,6 +693,10 @@ export default function TournamentEvent({ eventId, initialEvent = null }) {
         <div className="grid xl:grid-cols-2 gap-6">
           {brackets.map((bracket) => (
             <TournamentRoundRobin
+              eventId={eventId}
+              divisionId={viewDivision}
+              onEventUpdate={setEvent}
+              tieHost={host && !isEnded && !divisionKnockoutActive && !divisionFinished}
               key={bracket.id}
               bracket={bracket}
               pairById={pairById}
@@ -792,11 +797,11 @@ export default function TournamentEvent({ eventId, initialEvent = null }) {
                 {phase === "registration"
                   ? " Use the calculator before play starts."
                   : phase === "pool_play"
-                    ? " Live court scoring â€” top teams advance to quarterfinals."
+                    ? " Live court scoring â€” top teams advance to the selected knockout round."
                     : phase === "knockout"
                       ? championName
                         ? ` Champion: ${championName} â€” scroll for full finals results.`
-                        : " Finals â€” quarterfinals through championship."
+                        : " Finals â€” knockout rounds through championship."
                       : " Event finished."}
               </>
             ) : showPlayView ? (
@@ -1088,10 +1093,12 @@ export default function TournamentEvent({ eventId, initialEvent = null }) {
               ))}
             </div>
 
+            <TournamentSequence event={event} divisionId={viewDivision} host={host} onSaved={setEvent} />
+
             {divisionSetup?.plan && !divisionKnockoutActive && !divisionFinished && (
               <p className="text-sm text-slate-500">
                 {divisionSetup.plan.formulaText} â€” round robin per court; top teams
-                advance to quarterfinals.
+                advance to the selected knockout round.
               </p>
             )}
 

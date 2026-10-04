@@ -81,7 +81,7 @@ export default function EliminationResultsPanel({
   if (!knockout?.initialized) return null;
 
   const rounds = knockout.rounds ?? [];
-  const displayRounds = ["final", "bronze", "sf", "qf"]
+  const displayRounds = ["final", "bronze", "sf", "qf", "r16"]
     .map((id) => rounds.find((r) => r.id === id))
     .filter(Boolean);
   const completedCount = rounds.reduce(

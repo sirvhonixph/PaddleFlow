@@ -77,6 +77,7 @@ export default function DivisionAdvancementPanel({
   const { ready, ruleSummary, autoQualifiers, wildcards, allQualified, quarterfinals } =
     advancement;
 
+  const openingRound = advancement.knockoutSize === 16 ? "Round of 16" : "Quarterfinals";
   const knockoutActive = knockout?.initialized;
   const qfStarted = quarterfinalsHaveStarted(knockout);
   const canStartQuarterfinals = ready && host && !qfStarted;
@@ -85,7 +86,7 @@ export default function DivisionAdvancementPanel({
     <section className="bg-slate-900 border border-green-500/30 rounded-xl p-6 space-y-5">
       <div>
         <h2 className="text-xl font-bold text-green-300">
-          {knockoutActive ? "Finals" : "Quarterfinals"}
+          {knockoutActive ? "Finals" : openingRound}
         </h2>
         <p className="text-slate-400 text-sm mt-1">{ruleSummary}</p>
         {knockoutActive && hideKnockoutRounds && (
@@ -112,8 +113,8 @@ export default function DivisionAdvancementPanel({
             className="mt-3 px-5 py-2.5 bg-green-500 text-black font-bold rounded-lg text-sm disabled:opacity-50"
           >
             {startingQuarterfinals
-              ? "Starting quarterfinals…"
-              : "Start quarterfinals on courts"}
+              ? "Starting " + openingRound + "…"
+              : "Start " + openingRound + " on courts"}
           </button>
         )}
       </div>

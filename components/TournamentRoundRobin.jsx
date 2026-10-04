@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
+import BracketTieResolution from '@/components/BracketTieResolution';
 import { pairDisplayName } from "@/lib/tournament-divisions";
 import {
   expectedRoundRobinMatchCount,
@@ -234,6 +235,10 @@ function MatchScheduleRow({
 }
 
 export default function TournamentRoundRobin({
+  eventId,
+  divisionId,
+  onEventUpdate,
+  tieHost,
   bracket,
   pairById,
   divisionAdvancement,
@@ -258,11 +263,12 @@ export default function TournamentRoundRobin({
       return { top1PairId: null, top2PairId: null };
     }
     const sorted = [...standings].sort(compareStandings);
+    const unresolvedIds = new Set((bracket.unresolvedTies ?? []).flatMap(g => g.rows.map(r => r.pairId)));
     return {
-      top1PairId: sorted[0]?.pairId ?? null,
-      top2PairId: sorted.length > 1 ? sorted[1]?.pairId ?? null : null,
+      top1PairId: unresolvedIds.has(sorted[0]?.pairId) ? null : sorted[0]?.pairId ?? null,
+      top2PairId: unresolvedIds.has(sorted[1]?.pairId) ? null : sorted[1]?.pairId ?? null,
     };
-  }, [standings, showPoolLeaders]);
+  }, [standings, showPoolLeaders, bracket.unresolvedTies]);
   const advanced = new Set(bracket.advancedPairIds ?? []);
   const wildcardIds = new Set(
     (divisionAdvancement?.wildcards ?? [])
@@ -361,6 +367,7 @@ export default function TournamentRoundRobin({
 
       <div>
         <h4 className="text-sm font-semibold text-slate-400 mb-2">Standings</h4>
+        <BracketTieResolution bracket={bracket} host={tieHost ?? (host && !readOnly)} eventId={eventId} divisionId={divisionId} onSaved={onEventUpdate} />
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
@@ -456,12 +463,10 @@ export default function TournamentRoundRobin({
                             : "text-slate-400"
                     }`}
                   >
-                    {isTop1 ? "" : formatPointDiff(row.pointDiff)}
+                    {formatPointDiff(row.pointDiff)}
                   </td>
                   <td className="py-2 text-right pl-2 font-bold text-cyan-300 tabular-nums">
-                    {isTop1
-                      ? ""
-                      : row.tournamentPoints ?? row.wins * ROUND_ROBIN_WIN_POINTS}
+                    {row.tournamentPoints ?? row.wins * ROUND_ROBIN_WIN_POINTS}
                   </td>
                 </tr>
               );
@@ -471,13 +476,12 @@ export default function TournamentRoundRobin({
         </div>
         <p className="text-xs text-slate-500 mt-2">
           Pair list stays in bracket order. TOP 1 / TOP 2 badges appear after this
-          bracket finishes all pool matches (Pts → Diff → PF; TOP 1 leaves Diff and
-          Pts blank). Win ={" "}
+          bracket finishes all pool matches and required tiebreak decisions (Pts → Diff → PF). Win ={" "}
           {ROUND_ROBIN_WIN_POINTS} pts, loss = 0 (default win = {ROUND_ROBIN_WIN_POINTS}
           ). Each pair plays {perPair} matches ({expectedTotal} total). Advancement:
           Pts → Diff → PF.{" "}
           {divisionReady
-            ? "Green = advances to quarterfinals."
+            ? "Green = advances to knockout play."
             : showTiebreakCols
               ? "Finish all matches to lock advancement."
               : "Play matches in schedule order (1…" + expectedTotal + ")."}
