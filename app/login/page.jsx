@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { createSupabaseClient, isSupabaseConfigured } from "@/lib/supabase";
 import { getCurrentUser, saveCurrentUser } from "@/lib/session";
+import { ensureRegisteredPlayer } from "@/lib/players";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -18,37 +19,55 @@ export default function LoginPage() {
     setLoading(true);
     setError("");
 
-    if (isSupabaseConfigured()) {
-      const supabase = createSupabaseClient();
-      const { error: authError } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-      if (authError) {
-        setError(authError.message);
-        setLoading(false);
-        return;
+    try {
+      if (isSupabaseConfigured()) {
+        const supabase = createSupabaseClient();
+        const { data, error: authError } = await supabase.auth.signInWithPassword({
+          email,
+          password,
+        });
+        if (authError) {
+          setError(authError.message);
+          setLoading(false);
+          return;
+        }
+        if (!data?.user?.email || !data?.session) {
+          throw new Error("Sign-in did not create a session. Please try again.");
+        }
+        const player = await ensureRegisteredPlayer(data.user.email, { supabase });
+        saveCurrentUser({
+          email: data.user.email.trim().toLowerCase(),
+          name: player.name ?? "",
+          category: player.category ?? "",
+          dupr: player.dupr ?? "",
+          avatarDataUrl: player.avatarDataUrl ?? "",
+          mode: "supabase",
+        });
+      } else {
+        if (!email.trim()) {
+          setError("Enter your email");
+          setLoading(false);
+          return;
+        }
+        const existing = getCurrentUser();
+        saveCurrentUser({
+          email: email.trim(),
+          name:
+            existing?.email === email.trim() && existing?.name
+              ? existing.name
+              : "",
+          category: existing?.email === email.trim() ? existing.category : "",
+          mode: "demo",
+        });
       }
-    } else {
-      if (!email.trim()) {
-        setError("Enter your email");
-        setLoading(false);
-        return;
-      }
-      const existing = getCurrentUser();
-      saveCurrentUser({
-        email: email.trim(),
-        name:
-          existing?.email === email.trim() && existing?.name
-            ? existing.name
-            : "",
-        category: existing?.email === email.trim() ? existing.category : "",
-        mode: "demo",
-      });
-    }
 
-    setLoading(false);
-    router.push("/dashboard");
+      setLoading(false);
+      router.push("/dashboard");
+    } catch (err) {
+      setError(err.message ?? "Could not sign in. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
