@@ -48,7 +48,7 @@ export default function AppShell({
           >
             Menu
           </button>
-          <span className="pf-mobile-brand">PickleFlow</span>
+          <span className="pf-mobile-brand">PaddleFlow</span>
         </header>
 
         <main className={`pf-main ${mainClassName}`.trim()}>

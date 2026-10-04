@@ -48,7 +48,7 @@ export default function Sidebar({ open = false, onClose }) {
       data-open={open ? "true" : "false"}
       className="pf-sidebar-panel"
     >
-      <h1 className="pf-sidebar-title">PickleFlow</h1>
+      <h1 className="pf-sidebar-title">PaddleFlow</h1>
 
       <nav className="pf-sidebar-nav">
         {menuItems.map((item) => (

@@ -109,7 +109,7 @@ export default function RegisterPage() {
         </h1>
         <p className="text-center text-slate-400 text-sm mb-6">
           {isSupabaseConfigured()
-            ? "Create your PickleFlow account"
+            ? "Create your PaddleFlow account"
             : "Demo mode — data saved locally until Supabase is set up"}
         </p>
 

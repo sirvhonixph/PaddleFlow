@@ -1,5 +1,5 @@
 -- Run this in Supabase: SQL Editor → New query → Run
--- Sets up profiles + security for PickleFlow login (email + password)
+-- Sets up profiles + security for PaddleFlow login (email + password)
 
 create table if not exists profiles (
     id uuid primary key references auth.users(id) on delete cascade,

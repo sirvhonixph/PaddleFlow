@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getPlayerByEmail } from "@/lib/store-server";
 
-/** Check whether an email has completed PickleFlow registration (players store). */
+/** Check whether an email has completed PaddleFlow registration (players store). */
 export async function GET(request) {
   const email = new URL(request.url).searchParams.get("email")?.trim().toLowerCase();
   if (!email) {

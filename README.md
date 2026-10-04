@@ -1,10 +1,10 @@
-# PickleFlow
+# PaddleFlow
 
 Pickleball platform — tournaments, open play, dashboard, and player profiles.
 
 ## Quick start
 
-1. Double-click **`Start Pickleflow.bat`**
+1. Double-click **`Start Paddleflow.bat`**
 2. Open **http://localhost:3000**
 
 ## Trial links

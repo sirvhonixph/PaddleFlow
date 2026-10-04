@@ -165,7 +165,7 @@ export default function DashboardPage() {
   return (
     <AppShell>
         <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
-          <h1 className="text-3xl sm:text-4xl font-bold">Welcome to PickleFlow</h1>
+          <h1 className="text-3xl sm:text-4xl font-bold">Welcome to PaddleFlow</h1>
           <div className="flex flex-wrap gap-3">
             <Link
               href="/players"

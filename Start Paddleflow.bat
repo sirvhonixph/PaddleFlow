@@ -1,9 +1,9 @@
 @echo off
-title PickleFlow
+title PaddleFlow
 cd /d "%~dp0"
 
 echo.
-echo  PICKLEFLOW - Starting...
+echo  PADDLEFLOW - Starting...
 echo  Player login:  http://localhost:3000/login
 echo  Dashboard:     http://localhost:3000/dashboard
 echo.
