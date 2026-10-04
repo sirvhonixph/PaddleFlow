@@ -71,5 +71,18 @@ try {
 }
 assert("requires both player names", missingNames);
 
+const closedEvent = { ...baseEvent, registrationClosesAt: "2000-01-01T00:00:00Z" };
+const walkIn = { divisionId: "novice_mens_doubles", player1Name: "Late A", player2Name: "Late B" };
+assert("host walk-in bypasses public deadline", addPairRegistration(closedEvent, walkIn, { allowClosed: true }).pairRegistrations.length === 1);
+for (const [label, event, options] of [
+  ["public deadline remains enforced", closedEvent, {}],
+  ["host cannot add after play starts", { ...closedEvent, tournamentPhase: "pool_play" }, { allowClosed: true }],
+  ["host cannot add to ended event", { ...closedEvent, status: "ended" }, { allowClosed: true }],
+  ["host cannot add after brackets generated", { ...closedEvent, tournamentDivisions: { novice_mens_doubles: {} } }, { allowClosed: true }],
+]) {
+  let blocked = false;
+  try { addPairRegistration(event, walkIn, options); } catch { blocked = true; }
+  assert(label, blocked);
+}
 console.log(failed ? `\n${failed} test(s) failed` : "\nAll host pair tests passed");
 process.exit(failed ? 1 : 0);

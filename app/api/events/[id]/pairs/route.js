@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { getEventById, updateEventRecord } from "@/lib/store-server";
 import { addPairRegistration, updatePairRegistration, updatePairBasePlayer } from "@/lib/tournament-pairs";
-import { isRegistrationClosed } from "@/lib/tournament-registration";
 import { assertRequestHost } from "@/lib/event-host";
 
 export async function PATCH(request, { params }) {
@@ -88,12 +87,6 @@ export async function POST(request, { params }) {
         { status: 400 }
       );
     }
-    if (isRegistrationClosed(current)) {
-      return NextResponse.json(
-        { error: "Registration is closed." },
-        { status: 400 }
-      );
-    }
     if (current.tournamentDivisions?.[body.divisionId]) {
       return NextResponse.json(
         { error: "Brackets already set for this division." },
@@ -101,9 +94,10 @@ export async function POST(request, { params }) {
       );
     }
 
-    const updated = await updateEventRecord(params.id, (event) =>
-      addPairRegistration(event, body)
-    );
+    const updated = await updateEventRecord(params.id, (event) => {
+      assertRequestHost(body.hostId, event);
+      return addPairRegistration(event, body, { allowClosed: true });
+    });
 
     return NextResponse.json({ event: updated });
   } catch (e) {
