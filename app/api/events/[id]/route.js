@@ -39,6 +39,7 @@ export async function PATCH(request, { params }) {
 
     const merged = { ...current, ...patch };
     const hostOnlyChange =
+      JSON.stringify(current.removedCourtIds ?? []) !== JSON.stringify(merged.removedCourtIds ?? []) ||
       courtsPayloadChanged(current, merged) ||
       tournamentPayloadChanged(current, merged) ||
       streamPayloadChanged(current, merged) ||

@@ -87,6 +87,21 @@ assert(
   applyEventFetch(withFourth, staleCourts).courts.length === 4
 );
 
+const fourthId = withFourth.courts[3].id;
+const removedFourth = {
+  ...withFourth,
+  courts: withFourth.courts.filter(c => c.id !== fourthId),
+  removedCourtIds: [fourthId],
+};
+for (const [label, merged] of [
+  ["intentional court removal survives stale write", mergeConcurrentEventWrites(removedFourth, withFourth)],
+  ["intentional court removal survives stale poll", applyEventFetch(withFourth, removedFourth)],
+  ["court removal merge is order independent", mergeConcurrentEventWrites(withFourth, removedFourth)],
+]) {
+  assert(label, merged.courts.length === 3 && !merged.courts.some(c => c.id === fourthId));
+}
+const restoredCourt = addCourtToEvent(removedFourth, "Court 4");
+assert("restoring the court with a new id survives removal history", mergeConcurrentEventWrites(removedFourth, restoredCourt).courts.length === 4);
 console.log(
   failed ? `\n${failed} concurrent merge test(s) failed` : "\nAll concurrent pair merge tests passed"
 );

@@ -54,6 +54,7 @@ export async function DELETE(request, { params }) {
       return {
         ...event,
         courts: (event.courts ?? []).filter((c) => c.id !== courtId),
+        removedCourtIds: [...new Set([...(event.removedCourtIds ?? []), courtId])],
       };
     });
 
